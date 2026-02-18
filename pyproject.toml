@@ -1,0 +1,128 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-code-reviewer"
+version = "0.1.0"
+description = "AI-powered code review tool with quality metrics and docstring management"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["code-review", "static-analysis", "quality-metrics", "docstring", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+dependencies = [
+    "streamlit>=1.28.0",
+    "PyPDF2>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.3.0",
+    "pydocstyle>=6.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/ai-code-reviewer"
+Documentation = "https://github.com/yourusername/ai-code-reviewer#readme"
+Repository = "https://github.com/yourusername/ai-code-reviewer"
+Issues = "https://github.com/yourusername/ai-code-reviewer/issues"
+
+[project.scripts]
+ai-code-reviewer = "ai_code_reviewer:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--cov=core",
+    "--cov=integrations",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311"]
+include = '\.pyi?$'
+
+[tool.pydocstyle]
+convention = "google"
+add-ignore = ["D100", "D104"]
+
+[tool.coverage.run]
+source = ["core", "integrations"]
+omit = ["*/tests/*", "*/venv/*"]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.ai-code-reviewer]
+# Quality thresholds
+min_quality_score = 60
+max_complexity = 20
+min_doc_coverage = 70
+
+# Evaluation criteria thresholds
+parser_success_threshold = 95.0  # Parser must extract ≥95% of functions/classes
+docstring_generation_threshold = 100.0  # Must generate docstrings for 100% of missing cases
+require_coverage_report = true  # Coverage report must be generated
+
+# Severity levels to check
+severity_levels = ["CRITICAL", "WARNING", "INFO"]
+fail_on_severity = "CRITICAL"  # Fail CI if this severity or higher is found
+
+# Excluded paths (glob patterns)
+exclude = [
+    "*/tests/*",
+    "*/venv/*",
+    "*/__pycache__/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/.git/*",
+]
+
+# File patterns to include
+include = ["*.py"]
+
+# Auto-fix settings
+autofix_enabled = true
+autofix_categories = ["naming", "formatting", "documentation"]
+
+# Report settings
+report_format = "html"  # html, csv, json, or all
+report_output_dir = "reports"
+
+# Code smell detection
+detect_code_smells = true
+max_function_length = 50
+max_parameters = 5
+max_nesting_depth = 4

@@ -1,0 +1,219 @@
+AI-Based Code Review System 
+1. Introduction 
+The AI-Based Code Review System is a static analysis tool designed to automatically 
+examine Python source code and assess its overall quality. The system inspects the code 
+structure, identifies common programming issues, measures complexity, assigns severity 
+levels, calculates scores and grades, and presents results through an interactive web interface 
+for developers. 
+The project consists of two primary parts: 
+• Backend (Modules 1–5): Handles code analysis and report generation 
+• Frontend (Module 6): A web interface developed using Streamlit that allows users to 
+review results interactively 
+This project is modeled after real-world automated code review tools commonly used in 
+professional software development environments. 
+2. Backend.py Overview (Modules 1–5) 
+The backend serves as the main processing engine of the system. It uses Python’s Abstract 
+Syntax Tree (AST) to perform static code analysis. 
+Module 1 – Code Parsing and Structural Inspection 
+This module focuses on reading Python files and extracting their structural components. 
+get_python_files() 
+This function traverses a given directory and its subdirectories to locate all Python (.py) files. 
+It uses the os module to return a list of file paths. 
+Purpose: 
+• Enables analysis at the project level 
+• Supports automated processing of multiple files 
+read_file() 
+Reads the content of a Python file using UTF-8 encoding and returns it as a string. 
+Purpose: 
+• Loads source code for further analysis 
+extract_structure() 
+Parses the AST and extracts key structural elements such as: 
+• Imported libraries 
+• Function definitions 
+• Class definitions 
+• Loop statements 
+• Conditional statements 
+It utilizes ast.walk() to navigate through all nodes in the syntax tree. 
+Purpose: 
+• Provides insight into code organization 
+• Helps evaluate structural complexity 
+cyclomatic_complexity() 
+This function calculates cyclomatic complexity to measure logical branching. 
+Process: 
+• Starts with a base value of 1 
+• Increments complexity when encountering: 
+• if conditions 
+• for and while loops 
+• try blocks 
+• Boolean expressions 
+Higher complexity indicates: 
+• Increased branching 
+• Reduced maintainability 
+• Greater likelihood of errors 
+Purpose: 
+• Assesses logical difficulty of the program 
+Module 2 – Issue Identification and Severity Assignment 
+This module detects code quality problems using AST-based analysis. 
+detect_issues_ast() 
+Identifies common issues such as: 
+• Short or unclear function names 
+• Missing docstrings 
+• Excessive function parameters 
+• Long functions 
+• Use of magic numbers 
+• Empty exception handlers 
+• Debugging print statements 
+• Unused variables 
+The function tracks variable definitions, usage, and parameters to ensure accurate detection. 
+Purpose: 
+• Automatically detect poor coding practices 
+• Encourage adherence to clean coding principles 
+classify_severity() 
+Detected issues are categorized into severity levels: 
+• INFO: Minor concerns 
+• WARNING: Moderate problems 
+• CRITICAL: Serious issues 
+Examples: 
+• Missing documentation → INFO 
+• Too many parameters → WARNING 
+• Excessive function length → CRITICAL 
+Purpose: 
+• Helps prioritize fixes based on importance 
+explain_issue() 
+Provides a clear explanation for each issue along with recommended solutions. 
+Purpose: 
+• Guides developers on how to improve code quality 
+3. Scoring Mechanism 
+calculate_score() 
+Evaluates overall code quality using a scoring model. 
+Process: 
+• Initial score starts at 100 
+• Points are deducted based on: 
+• High complexity 
+• Number and severity of detected issues 
+Grades are assigned as follows: 
+• 90 and above: Excellent 
+• 75–89: Good 
+• 60–74: Average 
+• Below 60: Poor 
+Purpose: 
+• Offers a quantitative measure of code quality 
+• Mimics professional evaluation standards 
+4. Rule Engine 
+This module enforces configurable coding rules. 
+A configuration file defines: 
+• Maximum function length 
+• Maximum number of parameters 
+The rule_engine() function checks each function against these rules and reports violations. 
+Purpose: 
+• Allows customization of coding standards 
+• Supports enterprise-level adaptability 
+Main Analysis Function – analyze_file() 
+This is the central backend function that: 
+• Reads the source file 
+• Parses the AST 
+• Extracts structure 
+• Calculates complexity 
+• Detects issues 
+• Assigns severity 
+• Applies rule checks 
+• Computes final score and grade 
+• Generates a detailed report 
+It returns structured data for reporting. 
+Purpose: 
+• Integrates all backend modules into a complete workflow 
+Project-Wide Analysis – analyze_project() 
+This function: 
+• Gathers all Python files in a directory 
+• Analyzes each file individually 
+• Stores results 
+• Generates a CSV summary report (final_report.csv) 
+Purpose: 
+• Enables full project analysis 
+• Produces downloadable reports 
+Program Entry Point 
+The script uses: 
+python 
+Copy code 
+if __name__ == "__main__":  
+This ensures execution only when the file is run directly. 
+Example: 
+bash 
+Copy code 
+python backend.py project_folder  
+Purpose: 
+• Enables command-line execution 
+3. Frontend.py Overview (Module 6 – User Interface) 
+The frontend is developed using Streamlit, enabling rapid creation of web applications in 
+Python. 
+Interface Setup 
+Defines page layout, title, and description. 
+File Upload Feature 
+Users can upload a Python file, which is then: 
+• Read 
+• Analyzed 
+• Evaluated for issues 
+Purpose: 
+• Allows instant code review 
+Code Display Panel 
+The interface is divided into two columns. 
+Left panel: 
+• Displays formatted source code 
+Purpose: 
+• Improves readability 
+Issue Review Panel 
+Right panel: 
+• Lists detected issues 
+• Shows severity and line numbers 
+• Provides expandable explanations 
+• Includes Accept and Reject options 
+Users can filter issues by: 
+• ALL 
+• INFO 
+• WARNING 
+• CRITICAL 
+Purpose: 
+• Simulates a real code review workflow 
+Summary Section 
+Displays: 
+• Total number of issues 
+• Critical issues 
+• Warning issues 
+• Informational issues 
+Final status messages include: 
+• Critical issues present → Fix required 
+• Only warnings → Review advised 
+• No issues → Code quality is acceptable 
+Purpose: 
+• Provides a quick assessment of code health 
+4. System Architecture 
+Backend Components: 
+• AST-based analysis 
+• Issue detection 
+• Severity classification 
+• Rule enforcement 
+• Complexity calculation 
+• Scoring and grading 
+• CSV report generation 
+Frontend Components: 
+• File upload 
+• Code preview 
+• Issue filtering 
+• Interactive review 
+• Metrics dashboard 
+5. Key Highlights 
+• Automated static code analysis 
+• Cyclomatic complexity measurement 
+• Quality scoring system 
+• Severity-based issue classification 
+• Configurable rule engine 
+• CSV report generation 
+• Interactive web interface 
+6. Conclusion 
+The AI-Based Code Review System is a well-structured static analysis tool that automates 
+Python code review. It identifies quality issues, measures complexity, assigns scores and 
+grades, and offers actionable feedback. 
+The backend performs in-depth analysis using AST, while the frontend delivers an intuitive 
+and interactive review experience. This project demonstrates practical applications of static 
+analysis, software quality metrics, rule-based validation, modular design, and web-based 
+development tools, closely aligning with real-world software engineering practices. 

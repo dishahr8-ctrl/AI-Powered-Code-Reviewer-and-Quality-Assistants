@@ -1,0 +1,11 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt
+recursive-include core *.py
+recursive-include tests *.py
+exclude .gitignore
+exclude .pre-commit-config.yaml
+prune venv
+prune .vscode
+prune __pycache__
